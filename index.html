@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streaming</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: #ad0ff7;
+            padding: 20px;
+            font-weight: bolder;
+        }
+
+        .row {
+            display: flex;
+            margin-bottom: 30px;
+        }
+
+      
+        .movie {
+            margin: 10px;
+            text-align: center;
+            width: 200px;
+            border: 2px solid rgb(91, 76, 230); /* Weiße Umrandung */
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            transition: transform 0.2s ease;
+        }
+
+        .movie:hover {
+            transform: scale(1.05);
+            border-color: #e908e9;
+        } 
+          
+        img {
+            width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Best Movies</h1>
+
+    <div id="reihe1" class="row"></div>
+    <div id="reihe2" class="row"></div>
+    <div id="reihe3" class="row"></div>
+
+    <script src="main.js"></script>
+    <script>
+        const movies = [
+            { title: "Movie 1", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie1" },
+            { title: "Movie 2", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie2" },
+            { title: "Movie 3", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie3" },
+            { title: "Movie 4", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie4" },
+            { title: "Movie 5", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie5" },
+            { title: "Movie 6", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie6" },
+            { title: "Movie 7", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie7" },
+            { title: "Movie 8", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie8" },
+            { title: "Movie 9", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie9" }
+        ]; 
