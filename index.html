@@ -7,7 +7,9 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #111;
+            background: linear-gradient(135deg, #111111, #ff04ff, #f165f1);
+            background-size: 400% 400%;
+            animation: gradientMove 10s ease infinite;
             color: #ad0ff7;
             padding: 20px;
             font-weight: bolder;
@@ -15,26 +17,62 @@
 
         .row {
             display: flex;
+            justify-content: center; 
+            gap: 10px;               
+            flex-wrap: wrap;        
             margin-bottom: 30px;
         }
-
-      
-        .movie {
+     
+          .movie {
             margin: 10px;
             text-align: center;
             width: 200px;
-            border: 2px solid rgb(91, 76, 230); /* Weiße Umrandung */
+            border: 2px solid rgb(91, 76, 230); 
             border-radius: 10px;
-            padding: 10px;
+            padding: 5px;
             box-sizing: border-box;
             transition: transform 0.2s ease;
         }
 
         .movie:hover {
-            transform: scale(1.05);
+            transform: scale(1.2);
             border-color: #e908e9;
         } 
-          
+        .movie .info {
+            transition: opacity 0.3s ease;
+        }
+
+        .movie:hover .info {
+            opacity: 0;
+        }
+        .movie h3 {
+            color:rgb(91, 76, 230); 
+            font-size: 18px;
+            margin: 10px 0 5px;
+            transition: color 0.3s ease;
+        }
+        h1:hover{
+            transform: scale(1.2);
+        }
+        h1 {
+            text-align: center;
+            background: linear-gradient(90deg, #ff00ff, #ff0099, #9002f5, #0307f0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 70px;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+        }
+
+        .movie p {
+            color: linear-gradient(90deg, #ff00ff, #ff0099, #9002f5, #7d03f0);
+            font-size: 14px;
+            margin: 0;
+            transition: color 0.3s ease;
+        }
+
+
         img {
             width: 100%;
             border-radius: 10px;
@@ -50,15 +88,4 @@
     <div id="reihe3" class="row"></div>
 
     <script src="main.js"></script>
-    <script>
-        const movies = [
-            { title: "Movie 1", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie1" },
-            { title: "Movie 2", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie2" },
-            { title: "Movie 3", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie3" },
-            { title: "Movie 4", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie4" },
-            { title: "Movie 5", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie5" },
-            { title: "Movie 6", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie6" },
-            { title: "Movie 7", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie7" },
-            { title: "Movie 8", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie8" },
-            { title: "Movie 9", image: "https://via.placeholder.com/200x300", link: "https://example.com/movie9" }
-        ]; 
+   
