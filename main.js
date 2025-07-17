@@ -34,7 +34,6 @@ const reihe3 = [
     "tt1392214", // Prisoners
 ];
 
-// Funktion um Daten von der OMDb API zu holen
 async function ladeFilme(reihe, elementId) {
     const container = document.getElementById(elementId);
     for (let id of reihe) {
@@ -50,9 +49,34 @@ async function ladeFilme(reihe, elementId) {
         <p>${film.Year}</p>
         </div>
         `;
+        div.addEventListener('click', () => showModal(film));
         container.appendChild(div);
     }
 }
+const modal = document.getElementById('modal');
+const closeModal = document.getElementById('closeModal');
+
+function showModal(film) {
+    document.getElementById('modal-title').textContent = film.Title;
+    document.getElementById('modal-poster').src = film.Poster;
+    document.getElementById('modal-year').textContent = `Year: ${film.Year}`;
+    document.getElementById('modal-genre').textContent = `Genre: ${film.Genre}`;
+    document.getElementById('modal-actors').textContent = `Actors: ${film.Actors}`;
+    document.getElementById('modal-plot').textContent = film.Plot;
+    modal.style.display = 'block';
+}
+
+closeModal.onclick = () => {
+    modal.style.display = 'none';
+};
+
+window.onclick = (event) => {
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+};
+
+
 
 // Seitenaufbau
 ladeFilme(reihe1, "reihe1");
