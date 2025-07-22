@@ -4,156 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Streaming</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #111111, #ff04ff, #f165f1);
-            background-size: 400% 400%;
-            animation: gradientMove 10s ease infinite;
-            color: #ad0ff7;
-            padding: 20px;
-            font-weight: bolder;
-        }
-
-        .row {
-            display: flex;
-            justify-content: center; 
-            gap: 10px;               
-            flex-wrap: wrap;        
-            margin-bottom: 30px;
-        }
-     
-          .movie {
-            margin: 10px;
-            text-align: center;
-            width: 200px;
-            border: 2px solid rgb(91, 76, 230); 
-            border-radius: 10px;
-            padding: 5px;
-            box-sizing: border-box;
-            transition: transform 0.2s ease;
-        }
-
-        .movie:hover {
-            transform: scale(1.2);
-            border-color: #e908e9;
-        } 
-
-        .movie .info {
-            transition: opacity 0.3s ease;
-        }
-
-        .movie:hover .info {
-            opacity: 0;
-        }
-
-        .movie h3 {
-            color:rgb(91, 76, 230); 
-            font-size: 18px;
-            margin: 10px 0 5px;
-            transition: color 0.3s ease;
-        }
-
-        h1:hover{
-            transform: scale(1.2);
-        }
-
-        h1 {
-            text-align: center;
-            background: linear-gradient(90deg, #ff00ff, #ff0099, #9002f5, #0307f0);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 70px;
-            font-weight: 900;
-            text-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
-        }
-
-        .movie p {
-            color: linear-gradient(90deg, #ff00ff, #ff0099, #9002f5, #7d03f0);
-            font-size: 14px;
-            margin: 0;
-            transition: color 0.3s ease;
-        }
-
-        img {
-            width: 100%;
-            border-radius: 10px;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 999;
-            top: 0; 
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-   
-        }
-        .modal.show {
-            display: flex; 
-            align-items: center;
-            justify-content: center;
-        }
-
-
-        .modal-content {
-            background-color: #111;
-            padding: 20px;
-            border: 2px solid #f0f;
-            width: 350px;
-            max-width: 90%;
-            max-height: 95vh;
-            overflow-y: auto;
-            color: #fff;
-            text-align: center;
-            border-radius: 15px;
-            box-shadow: 0 0 30px #f0f;
-            position: relative;
-            animation: zoom 0.3s ease;
-        }
-
-        @keyframes zoom {
-            from { transform: scale(0.7); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-    
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #fff;
-        }
-
-
-</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
-
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <span id="closeModal" class="close">&times;</span>
-        <h2 id="modal-title"></h2>
-        <img id="modal-poster" />
-        <p id="modal-year"></p>
-        <p id="modal-genre"></p>
-        <p id="modal-actors"></p>
-        <p id="modal-plot"></p>
-    </div>
-</div>
 <body>
+    <header class="hero">
+        <div class="video-container">
+            <iframe
+                src="https://www.youtube.com/embed/QWF9dn6peBM?autoplay=1&mute=1&controls=0&showinfo=0&loop=1&playlist=QWF9dn6peBM"
+                frameborder="0"
+                allow="autoplay; fullscreen"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </header>
 
-    <h1>Best Movies</h1>
+    <nav class="navbar">
+        <h1 class="logo">Best Movies</h1>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="🔎 Suche nach Filmen ..." />
+            <button id="searchBtn" title="Suche"><i class="fas fa-search"></i></button>
+            <i id="loader" class="fas fa-spinner fa-spin"></i>
+        </div>
+        <button class="login-btn">Login</button>
+    </nav>
 
-    <div id="reihe1" class="row"></div>
-    <div id="reihe2" class="row"></div>
-    <div id="reihe3" class="row"></div>
+    <main>
+        <h2 id="search-title">Suchergebnisse</h2>
+        <div id="searchResults" class="row"></div>
+
+        <h2 id="watchlist-title">🎬 Deine Watchlist</h2>
+        <div id="watchlist" class="row"></div>
+
+        <section class="grid-section">
+            <h2>Alle Filme</h2>
+            <div id="gridContainer" class="grid-container"></div>
+        </section>
+    </main>
+
     <div id="modal" class="modal">
-        
-   <script src="main.js"></script>
-   
-<html>
+        <div class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <h2 id="modal-title"></h2>
+            <img id="modal-poster" alt="Movie poster" />
+            <p id="modal-year"></p>
+            <p id="modal-genre"></p>
+            <p id="modal-actors"></p>
+            <p id="modal-plot"></p>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

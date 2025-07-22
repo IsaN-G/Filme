@@ -10,6 +10,13 @@ const reihe1 = [
     "tt0111161", //  The Shawshank Redemption
     "tt0468569", //  The Dark Knight
     "tt0133093", //  The Matrix
+    "tt0816692",  // Interstellar
+    "tt1375666",  // Inception
+    "tt1856101",  // Blade Runner 2049
+    "tt0107290",  // Jurassic Park
+    "tt0137523",  // Fight Club
+    "tt0080684",  // Star Wars: The Empire Strikes Back
+    "tt4154756",  // Avengers: Infinity War
 ];  
 
 const reihe2 = [
@@ -21,6 +28,14 @@ const reihe2 = [
     "tt0109830",  // Forrest Gump
     "tt0114369",  // Se7en
     "tt0102926",  // The Silence of the Lambs
+    "tt0993846",  // The Wolf of Wall Street
+    "tt0114814",  // The Usual Suspects
+    "tt0246578",  // Donnie Darko
+    "tt0180093",  // Requiem for a Dream
+    "tt7286456",  // Joker
+    "tt0095016",  // Die Hard
+    "tt4154796",  // Avengers: Endgame
+    
 ];
 
 const reihe3 = [
@@ -32,24 +47,107 @@ const reihe3 = [
     "tt2267998", //  Gone Girl
     "tt0353969", //  Memories of Murder
     "tt1392214", // Prisoners
+    "tt0088763",  // Back to the Future
+    "tt0068646",  // The Godfather
+    "tt6751668",  // Parasite
+    "tt0169547",  // American Beauty
+    "tt0325980",  // Pirates of the Caribbean: The Curse of the Black Pearl
+    "tt0108052",  // Schindler's List
 ];
 
-async function ladeFilme(reihe, elementId) {
-    const container = document.getElementById(elementId);
-    for (let id of reihe) {
+function getWatchlist() {
+    return JSON.parse(localStorage.getItem('watchlist')) || [];
+}
+
+function saveWatchlist(list) {
+    localStorage.setItem('watchlist', JSON.stringify(list));
+}
+
+function toggleWatchlist(id) {
+    let list = getWatchlist();
+    let message = '';
+
+    if (list.includes(id)) {
+        
+        list = list.filter(item => item !== id);
+        message = 'Film aus Watchlist entfernt';
+    } else {
+        
+        list.push(id);
+        message = 'Film zur Watchlist hinzugefügt';
+    }
+
+    
+    saveWatchlist(list);
+    renderWatchlist();
+    showToast(message);
+}
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerText = message;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.remove();
+    }, 1500);
+}
+
+
+function isInWatchlist(id) {
+    return getWatchlist().includes(id);
+}
+
+
+async function ladeFilmeAlleInGrid() {
+    const alleFilme = [...reihe1, ...reihe2, ...reihe3]; 
+    const container = document.getElementById('gridContainer');
+    container.innerHTML = '';
+
+    for (let i = 0; i < alleFilme.length; i++) {
+        const id = alleFilme[i];
         const res = await fetch(`https://www.omdbapi.com/?i=${id}&apikey=${API_KEY}`);
         const film = await res.json();
 
         const div = document.createElement("div");
         div.className = "movie";
+
+      
+        if (i === 0) {
+            div.classList.add('large');
+        } else if (i === 1 || i === 2) {
+            div.classList.add('medium');
+        } else if (i >= 3 && i <= 6) {
+            div.classList.add('small');
+        } else {
+            div.classList.add('small'); 
+        }
+
         div.innerHTML = `
-        <img src="${film.Poster}" alt="${film.Title}">
-        <div class="info">
-        <h3>${film.Title}</h3>
-        <p>${film.Year}</p>
-        </div>
+            <img src="${film.Poster}" alt="${film.Title}">
+            <div class="info">
+                <h3>${film.Title}</h3>
+                <p>${film.Year}</p>
+                <i 
+                    class="heart ${isInWatchlist(film.imdbID) ? 'fas' : 'far'} fa-heart"
+                    title="${isInWatchlist(film.imdbID) ? 'Aus Watchlist entfernen' : 'Zur Watchlist hinzufügen'}"
+                    data-id="${film.imdbID}">
+                </i>
+            </div>
         `;
-        div.addEventListener('click', () => showModal(film));
+
+        div.addEventListener('click', (e) => {
+            if (e.target.classList.contains('heart')) {
+                e.stopPropagation();
+                e.target.classList.add('clicked');
+                setTimeout(() => e.target.classList.remove('clicked'), 200);
+                toggleWatchlist(e.target.dataset.id);
+                e.target.classList.toggle('fas');
+                e.target.classList.toggle('far');
+                return;
+            }
+            showModal(film);
+        });
+
         container.appendChild(div);
     }
 }
@@ -76,9 +174,163 @@ window.onclick = (event) => {
     }
 };
 
+async function renderWatchlist() {
+    const watchlistContainer = document.getElementById('watchlist');
+    const title = document.getElementById('watchlist-title');
+    const ids = getWatchlist();
+
+    if (ids.length === 0) {
+        watchlistContainer.innerHTML = '<p>Deine Watchlist ist leer.</p>';
+        title.style.display = 'none';
+        return;
+    }
+
+    title.style.display = 'block';
+    watchlistContainer.innerHTML = '';
+
+    for (let i = 0; i < ids.length; i++) {
+        const id = ids[i];
+        const res = await fetch(`https://www.omdbapi.com/?i=${id}&apikey=${API_KEY}`);
+        const film = await res.json();
+
+        const div = document.createElement("div");
+        div.className = "movie watchlist-item";
+if (i < 5) {
+    div.classList.add(`item-area-${i + 1}`);
+}
+        div.innerHTML = `
+            <img src="${film.Poster}" alt="${film.Title}">
+            <div class="info">
+                <h3>${film.Title}</h3>
+                <p>${film.Year}</p>
+                <i 
+                    class="heart fas fa-heart"
+                    title="Aus Watchlist entfernen"
+                    data-id="${film.imdbID}">
+                </i>
+            </div>
+        `;
+
+        div.querySelector('.heart').addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleWatchlist(film.imdbID);
+            renderWatchlist(); 
+        });
+
+        watchlistContainer.appendChild(div);
+    }
+}
+
+const searchInput = document.getElementById('searchInput');
+const searchBtn = document.getElementById('searchBtn');
+const searchResults = document.getElementById('searchResults');
+const searchTitle = document.getElementById('search-title');
+const loader = document.getElementById('loader');
+
+searchTitle.style.display = 'none';
+
+searchBtn.addEventListener('click', handleSearch);
+searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        handleSearch();
+    }
+});
+
+async function handleSearch() {
+    const query = searchInput.value.trim();
+    searchResults.innerHTML = '';
+    searchTitle.style.display = 'none';
+
+    if (!query) {
+        return;
+    }
+
+    loader.style.display = 'inline-block';
+
+    try {
+        const res = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${encodeURIComponent(query)}`);
+        const data = await res.json();
+
+        loader.style.display = 'none';
+
+        if (data.Response === "True") {
+            searchTitle.textContent = 'Suchergebnisse';
+            searchTitle.style.display = 'block';
+            ladeSuchErgebnisse(data.Search);
+        } else {
+            searchTitle.textContent = 'Keine Ergebnisse gefunden.';
+            searchTitle.style.display = 'block';
+            searchResults.innerHTML = '';
+        }
+    } catch (err) {
+        console.error(err);
+        loader.style.display = 'none';
+    }
+}
+const loginBtn = document.querySelector('.login-btn');
+loginBtn.addEventListener('click', () => {
+    alert('Login-Feature kommt bald 😉');
+});
 
 
-// Seitenaufbau
-ladeFilme(reihe1, "reihe1");
-ladeFilme(reihe2, "reihe2");
-ladeFilme(reihe3, "reihe3");
+function ladeSuchErgebnisse(searchArray) {
+    searchResults.innerHTML = '';
+
+    searchArray.forEach(film => {
+        const div = document.createElement("div");
+        div.className = "movie";
+        div.innerHTML = `
+            <img src="${film.Poster !== "N/A" ? film.Poster : 'https://via.placeholder.com/200x300?text=No+Image'}" alt="${film.Title}">
+            <div class="info">
+            <h3>${film.Title}</h3>
+            <p>${film.Year}</p>
+            <i 
+                class="heart ${isInWatchlist(film.imdbID) ? 'fas' : 'far'} fa-heart" 
+                title="${isInWatchlist(film.imdbID) ? 'Aus Watchlist entfernen' : 'Zur Watchlist hinzufügen'}" 
+                data-id="${film.imdbID}">
+        </i>
+            </div>
+        `;
+
+        div.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('heart')) {
+                e.stopPropagation();
+                e.target.classList.add('clicked');
+                setTimeout(() => e.target.classList.remove('clicked'), 200);
+                toggleWatchlist(e.target.dataset.id);
+                e.target.classList.toggle('fas');
+                e.target.classList.toggle('far');
+                return;
+            }
+
+            const res = await fetch(`https://www.omdbapi.com/?i=${film.imdbID}&apikey=${API_KEY}`);
+            const fullFilm = await res.json();
+            showModal(fullFilm);
+        });
+
+        searchResults.appendChild(div);
+    });
+}
+ladeFilmeAlleInGrid();
+
+ 
+
+const video = document.getElementById('header-video');
+let current = 0;
+
+function playNextClip() {
+    video.style.opacity = '0';
+    setTimeout(() => {
+        video.src = clips[current];
+        video.load();
+        video.play();
+        current = (current + 1) % clips.length;
+        video.style.opacity = '1';
+    }, 500);
+}
+
+video.addEventListener('ended', playNextClip);
+
+playNextClip();
+          
+          
