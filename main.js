@@ -68,16 +68,14 @@ function toggleWatchlist(id) {
     let message = '';
 
     if (list.includes(id)) {
-        
         list = list.filter(item => item !== id);
         message = 'Film aus Watchlist entfernt';
     } else {
-        
         list.push(id);
         message = 'Film zur Watchlist hinzugefügt';
     }
 
-    
+
     saveWatchlist(list);
     renderWatchlist();
     showToast(message);
@@ -92,11 +90,41 @@ function showToast(message) {
     }, 1500);
 }
 
-
 function isInWatchlist(id) {
     return getWatchlist().includes(id);
 }
 
+async function ladeTopTenFilme() {
+    const container = document.getElementById('topTenContainer');
+    container.innerHTML = '';
+
+    for (let i = 0; i < reihe1.length; i++) {
+        const id = reihe1[i];
+        const res = await fetch(`https://www.omdbapi.com/?i=${id}&apikey=${API_KEY}`);
+        const film = await res.json();
+        const div = document.createElement("div");
+        div.className = "top-ten-movie";
+        div.innerHTML = `
+            <div class="number">${i + 1}</div>
+            <img src="${film.Poster !== 'N/A' ? film.Poster : 'https://via.placeholder.com/200x300?text=No+Image'}" alt="${film.Title}">
+
+        `;
+        container.appendChild(div);
+    }
+}
+ladeTopTenFilme();
+
+const row = document.getElementById('topTenContainer');
+const btnLeft = document.querySelector('.scroll-btn.left');
+const btnRight = document.querySelector('.scroll-btn.right');
+
+btnLeft.addEventListener('click', () => {
+    row.scrollBy({ left: -400, behavior: 'smooth' });
+});
+
+btnRight.addEventListener('click', () => {
+    row.scrollBy({ left: 400, behavior: 'smooth' });
+});
 
 async function ladeFilmeAlleInGrid() {
     const alleFilme = [...reihe1, ...reihe2, ...reihe3]; 
@@ -106,7 +134,9 @@ async function ladeFilmeAlleInGrid() {
     for (let i = 0; i < alleFilme.length; i++) {
         const id = alleFilme[i];
         const res = await fetch(`https://www.omdbapi.com/?i=${id}&apikey=${API_KEY}`);
+       
         const film = await res.json();
+       
 
         const div = document.createElement("div");
         div.className = "movie";
@@ -123,8 +153,8 @@ async function ladeFilmeAlleInGrid() {
         }
 
         div.innerHTML = `
-            <img src="${film.Poster}" alt="${film.Title}">
-            <div class="info">
+            <img src="${film.Poster !== 'N/A' ? film.Poster : 'https://via.placeholder.com/200x300?text=No+Image'}" alt="${film.Title}">
+                <div class="info">
                 <h3>${film.Title}</h3>
                 <p>${film.Year}</p>
                 <i 
@@ -134,7 +164,7 @@ async function ladeFilmeAlleInGrid() {
                 </i>
             </div>
         `;
-
+       
         div.addEventListener('click', (e) => {
             if (e.target.classList.contains('heart')) {
                 e.stopPropagation();
@@ -143,6 +173,7 @@ async function ladeFilmeAlleInGrid() {
                 toggleWatchlist(e.target.dataset.id);
                 e.target.classList.toggle('fas');
                 e.target.classList.toggle('far');
+                e.target.title = isInWatchlist(e.target.dataset.id) ? 'Aus Watchlist entfernen' : 'Zur Watchlist hinzufügen';
                 return;
             }
             showModal(film);
@@ -191,6 +222,7 @@ async function renderWatchlist() {
     for (let i = 0; i < ids.length; i++) {
         const id = ids[i];
         const res = await fetch(`https://www.omdbapi.com/?i=${id}&apikey=${API_KEY}`);
+      
         const film = await res.json();
 
         const div = document.createElement("div");
@@ -199,8 +231,8 @@ if (i < 5) {
     div.classList.add(`item-area-${i + 1}`);
 }
         div.innerHTML = `
-            <img src="${film.Poster}" alt="${film.Title}">
-            <div class="info">
+           <img src="${film.Poster !== 'N/A' ? film.Poster : 'https://via.placeholder.com/200x300?text=No+Image'}" alt="${film.Title}">
+                <div class="info">
                 <h3>${film.Title}</h3>
                 <p>${film.Year}</p>
                 <i 
@@ -249,6 +281,8 @@ async function handleSearch() {
 
     try {
         const res = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${encodeURIComponent(query)}`);
+   
+        
         const data = await res.json();
 
         loader.style.display = 'none';
@@ -280,7 +314,7 @@ function ladeSuchErgebnisse(searchArray) {
         const div = document.createElement("div");
         div.className = "movie";
         div.innerHTML = `
-            <img src="${film.Poster !== "N/A" ? film.Poster : 'https://via.placeholder.com/200x300?text=No+Image'}" alt="${film.Title}">
+           <img src="${film.Poster !== 'N/A' ? film.Poster : 'https://via.placeholder.com/200x300?text=No+Image'}" alt="${film.Title}">
             <div class="info">
             <h3>${film.Title}</h3>
             <p>${film.Year}</p>
@@ -304,6 +338,7 @@ function ladeSuchErgebnisse(searchArray) {
             }
 
             const res = await fetch(`https://www.omdbapi.com/?i=${film.imdbID}&apikey=${API_KEY}`);
+         
             const fullFilm = await res.json();
             showModal(fullFilm);
         });
@@ -315,22 +350,23 @@ ladeFilmeAlleInGrid();
 
  
 
-const video = document.getElementById('header-video');
-let current = 0;
 
-function playNextClip() {
-    video.style.opacity = '0';
-    setTimeout(() => {
-        video.src = clips[current];
-        video.load();
-        video.play();
-        current = (current + 1) % clips.length;
-        video.style.opacity = '1';
-    }, 500);
-}
-
-video.addEventListener('ended', playNextClip);
-
-playNextClip();
+  
+  const video = document.getElementById('header-video');
+  let current = 0;
+  
+  function playNextClip() {
+      video.style.opacity = '0';
+      setTimeout(() => {
+          video.src = clips[current];
+          video.load();
+          video.play();
+          current = (current + 1) % clips.length;
+          video.style.opacity = '1';
+      }, 500);
+  }
+  
+  video.addEventListener('ended', playNextClip);
+  playNextClip();
           
-          
+     

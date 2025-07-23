@@ -20,7 +20,7 @@
     </header>
 
     <nav class="navbar">
-        <h1 class="logo">Best Movies</h1>
+        <h1 class="logo">NextView</h1>
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="🔎 Suche nach Filmen ..." />
             <button id="searchBtn" title="Suche"><i class="fas fa-search"></i></button>
@@ -35,9 +35,17 @@
 
         <h2 id="watchlist-title">🎬 Deine Watchlist</h2>
         <div id="watchlist" class="row"></div>
-
+        
+        <h2>Top 15</h2>
+          <div class="top10-container">
+            <button class="scroll-btn left">&#8249;</button>
+            <div class="top10-row" id="topTenContainer">
+          </div>
+            <button class="scroll-btn right">&#8250;</button>
+        </div>
+        
         <section class="grid-section">
-            <h2>Alle Filme</h2>
+            <h2>Empfohlene Filme</h2>
             <div id="gridContainer" class="grid-container"></div>
         </section>
     </main>
@@ -53,6 +61,18 @@
             <p id="modal-plot"></p>
         </div>
     </div>
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p>&copy; 2025 MovieWorld. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Impressum</a>
+                <a href="#">Datenschutz</a>
+                <a href="#">Kontakt</a>
+            </div>
+        </div>
+    </footer>
+
+
 
     <script src="main.js"></script>
 </body>
