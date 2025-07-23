@@ -50,17 +50,6 @@
         </section>
     </main>
 
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span id="closeModal" class="close">&times;</span>
-            <h2 id="modal-title"></h2>
-            <img id="modal-poster" alt="Movie poster" />
-            <p id="modal-year"></p>
-            <p id="modal-genre"></p>
-            <p id="modal-actors"></p>
-            <p id="modal-plot"></p>
-        </div>
-    </div>
     <footer class="site-footer">
         <div class="footer-content">
             <p>&copy; 2025 MovieWorld. All rights reserved.</p>
@@ -73,6 +62,21 @@
     </footer>
 
 
+    <div id="modal" class="modal">
+        <div class="modal-content">
+          <span id="closeModal" class="close">&times;</span>
+          <h2 id="modal-title"></h2>
+          <img id="modal-poster" alt="Movie poster" />
+          <p id="modal-year"></p>
+          <p id="modal-genre"></p>
+          <p id="modal-actors"></p>
+          <p id="modal-plot"></p>
+          
+          <div id="modal-video-container" style="margin-top: 1rem; display: none;">
+            <iframe id="modal-video" width="100%" height="315" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
 
     <script src="main.js"></script>
 </body>

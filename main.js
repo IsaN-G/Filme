@@ -1,17 +1,21 @@
 const API_KEY = 'c9bed387';
-
-
+const trailerMap = {
+    "tt0110912": "s7EdQ4FqbhY",   // Pulp Fiction
+    "tt0133093": "m8e-FF8MsqU",   // The Matrix Trailer
+    "tt0109830": "uPIEn0M8su0",   // Forrest Gump Trailer
+    "tt0816692": "zSWdZVtXT7E",   // Interstellar Trailer
+    "tt1375666": "YoHD9XEInc0",   // Inception Trailer
+  };
 const reihe1 = [
-    "tt13443470", // The Black Phone 2
-    "tt29644189", // Wednesday
-    "tt0083658",  // Blade Runner
-    "tt33043892", // Dexter: Resurrection
-    "tt0110912", //  Pulp Fiction
-    "tt0111161", //  The Shawshank Redemption
-    "tt0468569", //  The Dark Knight
+    "tt0109830",  // Forrest Gump
     "tt0133093", //  The Matrix
     "tt0816692",  // Interstellar
     "tt1375666",  // Inception
+    "tt0110912", //  Pulp Fiction
+    "tt0083658",  // Blade Runner
+    "tt33043892", // Dexter: Resurrection
+    "tt0111161", //  The Shawshank Redemption
+    "tt0468569", //  The Dark Knight
     "tt1856101",  // Blade Runner 2049
     "tt0107290",  // Jurassic Park
     "tt0137523",  // Fight Club
@@ -20,12 +24,13 @@ const reihe1 = [
 ];  
 
 const reihe2 = [
+    "tt13443470", // The Black Phone 2
     "tt0120903",  // X-Men
     "tt1490017",  // The Lego Movie
     "tt0175142",  // Scary Movie
     "tt0159206",  // Sex and the City
     "tt0120737",  // The Lord of the Rings: The Fellowship of the Ring
-    "tt0109830",  // Forrest Gump
+    "tt29644189", // Wednesday
     "tt0114369",  // Se7en
     "tt0102926",  // The Silence of the Lambs
     "tt0993846",  // The Wolf of Wall Street
@@ -102,6 +107,7 @@ async function ladeTopTenFilme() {
         const id = reihe1[i];
         const res = await fetch(`https://www.omdbapi.com/?i=${id}&apikey=${API_KEY}`);
         const film = await res.json();
+        
         const div = document.createElement("div");
         div.className = "top-ten-movie";
         div.innerHTML = `
@@ -109,6 +115,10 @@ async function ladeTopTenFilme() {
             <img src="${film.Poster !== 'N/A' ? film.Poster : 'https://via.placeholder.com/200x300?text=No+Image'}" alt="${film.Title}">
 
         `;
+        div.addEventListener('click', () => {
+            showModal(film); 
+          });
+
         container.appendChild(div);
     }
 }
@@ -192,18 +202,34 @@ function showModal(film) {
     document.getElementById('modal-genre').textContent = `Genre: ${film.Genre}`;
     document.getElementById('modal-actors').textContent = `Actors: ${film.Actors}`;
     document.getElementById('modal-plot').textContent = film.Plot;
-    modal.style.display = 'block';
+
+    const videoContainer = document.getElementById('modal-video-container');
+  const video = document.getElementById('modal-video');
+  const videoId = trailerMap[film.imdbID];
+
+  if (videoId) {
+    video.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}`;
+    videoContainer.style.display = 'block';
+  } else {
+    video.src = '';
+    videoContainer.style.display = 'none';
+  }
+
+  document.getElementById('modal').style.display = 'block';
 }
 
-closeModal.onclick = () => {
-    modal.style.display = 'none';
-};
-
-window.onclick = (event) => {
+  document.getElementById('closeModal').onclick = () => {
+    document.getElementById('modal').style.display = 'none';
+    document.getElementById('modal-video').src = '';
+  };
+  
+  window.onclick = (event) => {
+    const modal = document.getElementById('modal');
     if (event.target === modal) {
-        modal.style.display = 'none';
+      modal.style.display = 'none';
+      document.getElementById('modal-video').src = '';
     }
-};
+  };
 
 async function renderWatchlist() {
     const watchlistContainer = document.getElementById('watchlist');
