@@ -300,6 +300,7 @@ async function handleSearch() {
         console.error(err);
         loader.style.display = 'none';
     }
+    searchInput.value = '';
 }
 const loginBtn = document.querySelector('.login-btn');
 loginBtn.addEventListener('click', () => {
