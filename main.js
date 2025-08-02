@@ -1,38 +1,37 @@
 const API_KEY = 'c9bed387';
 
 const trailerMap = {
-    "tt0110912": "s7EdQ4FqbhY",   // Pulp Fiction
-    "tt0133093": "m8e-FF8MsqU",   // The Matrix Trailer
-    "tt0109830": "uPIEn0M8su0",   // Forrest Gump Trailer
-    "tt0816692": "zSWdZVtXT7E",   // Interstellar Trailer
-    "tt1375666": "YoHD9XEInc0",   // Inception Trailer
-    "tt0111161": "NmzuHjWmXOc",   // The Shawshank Redemption
-    "tt0120737": "V75dMMIW2B4",   // The Lord of the Rings: The Fellowship of the Ring
-    "tt0114369": "znmZoVkCjpI",   // Se7en
-    "tt0102926": "hA0V38vGf2k",   // The Silence of the Lambs
-    "tt0499549": "5PSNL1qE6VY",   // Django Unchained
-    "tt0110413": "hEJnMQG9ev8",   // Léon: The Professional
-    "tt0120815": "hEJnMQG9ev8",   // Saving Private Ryan
-    "tt0088763": "qvsgGtivCgs",   // Back to the Future
-    "tt0114709": "6hB3S9bIaco",   // Toy Story
-    
+    "tt11315808":"_4FtwFaGR88", // Joker: Folie à Deux
+    "tt10545296":"Avt5jFnIn_g", // Gladiator II
+    "tt6263850":"7jG_oHtN3mY",  // Deadpool & Wolverine
+    "tt2096673":"5IsgZPj1bTI", // Inside Out 2
+    "tt11389872":"lxYRjgmW6A0", // Kingdom of the Planet of the Apes
+    "tt15398776":"cE331qh3jYs", // Oppenheimer 
+    "tt12037194":"Y9xlBFagk2U", // Furiosa
+    "tt16426418":"aYJ8wcsC714", // Challengers
+    "tt12593682":"XLNLERSD-_c", // Bullet Train
+    "tt1517268":"4goO4tQRMAA",  // Barbie (2023)
+    "tt9362722":"00YPh8HiNfs",  // Spider-Man: Across the Spider-Verse
+    "tt15239678":"uEFq2Jp9YbE", // Dune: Part Two
+    "tt30988739":"OUqXTWCfs30", //  Black Bag
+    "tt1684562":"zXp_vuN7ZJU", // The Fall Guy
+    "tt10640346":"EClUnohji1M", // Babylon – Rausch der Ekstase
   };
   const reihe1 = [
-    "tt0109830",  // Forrest Gump
-    "tt0133093", //  The Matrix
-    "tt0816692",  // Interstellar
-    "tt1375666",  // Inception
-    "tt0110912", //  Pulp Fiction
-    "tt0120737",  // The Lord of the Rings: The Fellowship of the Ring
-    "tt0114369",  // Se7en
-    "tt29644189", // Wednesday
-    "tt0111161", //  The Shawshank Redemption
-    "tt0102926",  // The Silence of the Lambs
-    "tt0499549",  // Avatar
-    "tt0110413",  // Léon: The Professional
-    "tt0120815",  // Saving Private Ryan
-    "tt0088763",  // Back to the Future
-    "tt0114709",  // Toy Story
+    "tt11315808", // Joker: Folie à Deux
+    "tt10545296", // Gladiator II
+    "tt6263850",  // Deadpool & Wolverine
+    "tt2096673", // Inside Out 2
+    "tt11389872", // Kingdom of the Planet of the Apes
+    "tt15398776", // Oppenheimer 
+    "tt12037194", // Furiosa
+    "tt16426418", // Challengers
+    "tt12593682", // Bullet Train
+    "tt1517268",  // Barbie (2023)
+    "tt9362722",  // Spider-Man: Across the Spider-Verse
+    "tt15239678", // Dune: Part Two
+    "tt1684562", // The Fall Guy
+    "tt10640346", // Babylon – Rausch der Ekstase
 ];
 const reihe2 = [
     "tt13443470", // The Black Phone 2
@@ -53,7 +52,6 @@ const reihe2 = [
     "tt4154796",  // Avengers: Endgame
     "tt0083658",  // Blade Runner
     "tt33043892", // Dexter: Resurrection
-    "tt0111161", //  The Shawshank Redemption
     "tt0468569", //  The Dark Knight
     "tt1856101",  // Blade Runner 2049
     "tt0107290",  // Jurassic Park
@@ -80,20 +78,23 @@ const reihe3 = [
 ];
 
 const reihe4 = [
-    "tt11315808", // Joker: Folie à Deux
-    "tt10545296", // Gladiator II
-    "tt6263850",  // Deadpool & Wolverine
-    "tt12915716", // Inside Out 2
-    "tt11389872", // Kingdom of the Planet of the Apes
     "tt16758398", // Dune: Part Three
-    "tt12037194", // Furiosa
-    "tt14537248", // Challengers
     "tt10268488", // Civil War
     "tt15398776", // The Bikeriders
-    "tt1517268",  // Barbie (2023)
-    "tt9362722",  // Spider-Man: Across the Spider-Verse
-    "tt1462764",  // Dune: Part Two
-  ];
+    "tt0109830", // Forrest Gump Trailer
+    "tt0110912",   // Pulp Fiction
+    "tt0133093",  // The Matrix Trailer
+    "tt0816692",   // Interstellar Trailer
+    "tt1375666",   // Inception Trailer
+    "tt0111161",   // The Shawshank Redemption
+    "tt0120737",   // The Lord of the Rings: The Fellowship of the Ring
+    "tt0114369",   // Se7en
+    "tt0102926",   // The Silence of the Lambs
+    "tt0499549",   // Django Unchained
+    "tt0114709",   // Toy Story
+    "tt0110912",   // Pulp Fiction
+
+];
 
 
   async function holeFilmdaten(filmId) {
@@ -505,4 +506,5 @@ ladeFilmeAlleInGrid();
       }
     }
   }); 
+ 
  
