@@ -653,3 +653,27 @@ display: none;
   .sound-toggle:hover {
     background-color: rgba(255, 255, 255, 0.2);
   }
+  .dark-mode body {
+    background: #0d0d0d !important;
+    color: #ccc !important;
+}
+
+.dark-mode .navbar,
+.dark-mode .site-footer {
+    background-color: #111;
+    border-color: #444;
+}
+
+.dark-mode .logo,
+.dark-mode .movie h3 {
+    color: #f0f0f0;
+}
+
+.dark-mode .movie p {
+    color: #999;
+}
+
+.dark-mode .search-container input {
+    background-color: #222;
+    border-color: #555;
+}

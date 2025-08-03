@@ -13,7 +13,6 @@ const trailerMap = {
     "tt1517268":"4goO4tQRMAA",  // Barbie (2023)
     "tt9362722":"00YPh8HiNfs",  // Spider-Man: Across the Spider-Verse
     "tt15239678":"uEFq2Jp9YbE", // Dune: Part Two
-    "tt30988739":"OUqXTWCfs30", //  Black Bag
     "tt1684562":"zXp_vuN7ZJU", // The Fall Guy
     "tt10640346":"EClUnohji1M", // Babylon – Rausch der Ekstase
   };
@@ -448,63 +447,69 @@ function ladeSuchErgebnisse(searchArray) {
     });
 }
 ladeFilmeAlleInGrid();
+let headerPlayer;
+let isMuted = true;
 
+// Ersetze diese ID durch dein gewünschtes Trailer-/Header-Video
+const HEADER_VIDEO_ID = "7jG_oHtN3mY"; // z.B. Deadpool & Wolverine
 
-  const video = document.getElementById('header-video');
-  let current = 0;
-  
-  function playNextClip() {
-      video.style.opacity = '0';
-      setTimeout(() => {
-        const clips = [];
-        headerPlayer.playVideo()
-          video.play();
-          current = (current + 1) % clips.length;
-          video.style.opacity = '1';
-      }, 500);
-  }
-  
-
-  let headerPlayer;
-  let isMuted = true;
-  
-  function onYouTubeIframeAPIReady() {
+function onYouTubeIframeAPIReady() {
     headerPlayer = new YT.Player('header-video', {
-      videoId: 'QWF9dn6peBM', // Trailer-ID aus deinem Header-Embed
-      playerVars: {
-        autoplay: 1,
-        mute: 1,
-        controls: 0,
-        loop: 1,
-        playlist: 'QWF9dn6peBM',
-        modestbranding: 1,
-        rel: 0,
-        showinfo: 0
-      },
-      events: {
-        onReady: (event) => {
-          event.target.playVideo();
+        videoId: HEADER_VIDEO_ID,
+        playerVars: {
+            autoplay: 1,
+            controls: 0,
+            showinfo: 0,
+            modestbranding: 1,
+            loop: 1,
+            playlist: HEADER_VIDEO_ID, // notwendig für loop
+            mute: 1,
+        },
+        events: {
+            onReady: (event) => {
+                event.target.mute();     // wichtig für Autoplay
+                event.target.playVideo();
+            }
         }
-      }
     });
+}
+
+document.getElementById('enable-sound').addEventListener('click', () => {
+    if (!headerPlayer) return;
+
+    isMuted = !isMuted;
+
+    const icon = document.querySelector('#enable-sound i');
+    if (isMuted) {
+        headerPlayer.mute();
+        icon.classList.remove('fa-volume-up');
+        icon.classList.add('fa-volume-mute');
+    } else {
+        headerPlayer.unMute();
+        icon.classList.remove('fa-volume-mute');
+        icon.classList.add('fa-volume-up');
+    }
+
+    document.getElementById('enable-sound').title = isMuted ? 'Ton einschalten' : 'Ton ausschalten';
+});
+
+
+  const darkToggle = document.getElementById("darkModeToggle");
+
+  function setDarkMode(enabled) {
+      document.documentElement.classList.toggle("dark-mode", enabled);
+      localStorage.setItem("darkMode", enabled ? "true" : "false");
+      darkToggle.title = enabled ? "Hellen Modus aktivieren" : "Dunklen Modus aktivieren";
+      darkToggle.querySelector("i").className = enabled ? "fas fa-sun" : "fas fa-moon";
   }
   
-  document.getElementById('enable-sound').addEventListener('click', () => {
-    if (headerPlayer) {
-      if (isMuted) {
-        headerPlayer.unMute();
-        isMuted = false;
-        document.querySelector('#enable-sound i').classList.remove('fa-volume-mute');
-        document.querySelector('#enable-sound i').classList.add('fa-volume-up');
-        document.getElementById('enable-sound').title = 'Ton ausschalten';
-      } else {
-        headerPlayer.mute();
-        isMuted = true;
-        document.querySelector('#enable-sound i').classList.remove('fa-volume-up');
-        document.querySelector('#enable-sound i').classList.add('fa-volume-mute');
-        document.getElementById('enable-sound').title = 'Ton einschalten';
-      }
-    }
-  }); 
- 
+  darkToggle.addEventListener("click", () => {
+      const current = document.documentElement.classList.contains("dark-mode");
+      setDarkMode(!current);
+  });
+  
+  // Beim Laden berücksichtigen
+  const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const savedMode = localStorage.getItem("darkMode");
+  setDarkMode(savedMode === "true" || (savedMode === null && systemDark));
  
