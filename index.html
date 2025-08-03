@@ -17,18 +17,22 @@
         </button>
       </header>
 
-    <nav class="navbar">
+      <nav class="navbar">
         <h1 class="logo">NextView</h1>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="🔎 Suche nach Filmen ..." />
-            <button id="searchBtn" title="Suche"><i class="fas fa-search"></i></button>
-            <i id="loader" class="fas fa-spinner fa-spin"></i>
+      
+        <div class="search-container center-search">
+          <input type="text" id="searchInput" placeholder="🔎 Suche nach Filmen ..." />
+          <button id="searchBtn" title="Suche"><i class="fas fa-search"></i></button>
+          <i id="loader" class="fas fa-spinner fa-spin"></i>
         </div>
-        <button class="login-btn">Login</button>
-        <button id="darkModeToggle" title="Dark Mode umschalten">
-  <i class="fas fa-moon"></i>
-</button>
-    </nav>
+      
+        <div class="nav-buttons">
+          <button class="login-btn">Login</button>
+          <button id="darkModeToggle" title="Dark Mode umschalten">
+            <i class="fas fa-moon"></i>
+          </button>
+        </div>
+      </nav>
 
     <main>
         <h2 id="search-title">Suchergebnisse</h2>
@@ -36,6 +40,8 @@
 
         <h2 id="watchlist-title">🎬 Deine Watchlist</h2>
         <div id="watchlist" class="row"></div>
+
+       
         
         <h2>Top 14</h2>
           <div class="top10-container">

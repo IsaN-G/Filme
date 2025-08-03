@@ -108,8 +108,8 @@ const reihe4 = [
   
       return {
         titel: film.Title,
-        poster: film.Poster !== "N/A" ? film.Poster : "fallback.jpg", // Fallback bei fehlendem Poster
-        trailer: film.Trailer || null // Optional: ein eigenes Trailer-Feld, wenn du das ergänzt
+        poster: film.Poster !== "N/A" ? film.Poster : "fallback.jpg", 
+        trailer: film.Trailer || null 
       };
     } catch (error) {
       console.error("Fehler beim Laden des Films:", error);
@@ -138,7 +138,7 @@ function toggleWatchlist(id) {
         message = 'Film aus Watchlist entfernt';
     }
 
-    saveWatchlist([...new Set(list)]); // Deduplizieren
+    saveWatchlist([...new Set(list)]); 
     renderWatchlist();
     showToast(message);
 }
@@ -164,17 +164,28 @@ async function ladeTopTenFilme() {
         const id = reihe1[i];
         const res = await fetch(`https://www.omdbapi.com/?i=${id}&apikey=${API_KEY}`);
         const film = await res.json();
-        
+
         const div = document.createElement("div");
         div.className = "top-ten-movie";
+
         div.innerHTML = `
             <div class="number">${i + 1}</div>
             <img src="${film.Poster !== 'N/A' ? film.Poster : 'https://via.placeholder.com/200x300?text=No+Image'}" alt="${film.Title}">
-
         `;
+
+        const trailerId = trailerMap[id]; 
+        if (trailerId) {
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube.com/embed/${trailerId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerId}`;
+            iframe.frameBorder = "0";
+            iframe.allow = "autoplay; encrypted-media";
+            iframe.allowFullscreen = true;
+            div.appendChild(iframe);
+        }
+
         div.addEventListener('click', () => {
-            showModal(film); 
-          });
+            showModal(film);
+        });
 
         container.appendChild(div);
     }
@@ -261,11 +272,11 @@ function showModal(film) {
     const videoId = trailerMap[film.imdbID];
   
     if (videoId) {
-      // Nur den Trailer zeigen
+     
       video.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=1`;
       videoContainer.style.display = 'block';
   
-      // Alle anderen Infos ausblenden
+      
       document.getElementById('modal-title').style.display = 'none';
       document.getElementById('modal-poster').style.display = 'none';
       document.getElementById('modal-year').style.display = 'none';
@@ -273,11 +284,11 @@ function showModal(film) {
       document.getElementById('modal-actors').style.display = 'none';
       document.getElementById('modal-plot').style.display = 'none';
     } else {
-      // Falls kein Trailer vorhanden, Modal komplett ausblenden oder eine Nachricht zeigen
+    
       video.src = '';
       videoContainer.style.display = 'none';
   
-      // Alternativ kannst du hier wieder alles einblenden, falls gewünscht
+      
       document.getElementById('modal-title').style.display = 'block';
       document.getElementById('modal-poster').style.display = 'block';
       document.getElementById('modal-year').style.display = 'block';
@@ -285,7 +296,7 @@ function showModal(film) {
       document.getElementById('modal-actors').style.display = 'block';
       document.getElementById('modal-plot').style.display = 'block';
   
-      // Und mit Film-Infos befüllen, falls du willst:
+      
       document.getElementById('modal-title').textContent = film.Title;
       document.getElementById('modal-poster').src = film.Poster;
       document.getElementById('modal-year').textContent = `Year: ${film.Year}`;
@@ -312,7 +323,7 @@ function showModal(film) {
 
   async function renderWatchlist() {
     const watchlistContainer = document.getElementById("watchlist");
-    watchlistContainer.innerHTML = ''; // wichtig: vorher leeren
+    watchlistContainer.innerHTML = ''; 
 
     const ids = [...new Set(getWatchlist())].filter(id => typeof id === 'string' && id.startsWith('tt'));
 
@@ -326,11 +337,11 @@ function showModal(film) {
         const div = document.createElement("div");
         div.className = "movie watchlist-item";
 
-        // Markiere bestimmte Filme als "größer"
+        
         if (i === 0 || i === 1) {
-            div.classList.add("featured-xl"); // sehr groß
+            div.classList.add("featured-xl"); 
         } else if (i === 2 || i === 3) {
-            div.classList.add("featured-lg"); // mittelgroß
+            div.classList.add("featured-lg"); 
         }
 
         div.innerHTML = `
@@ -450,8 +461,8 @@ ladeFilmeAlleInGrid();
 let headerPlayer;
 let isMuted = true;
 
-// Ersetze diese ID durch dein gewünschtes Trailer-/Header-Video
-const HEADER_VIDEO_ID = "7jG_oHtN3mY"; // z.B. Deadpool & Wolverine
+
+const HEADER_VIDEO_ID = "1pNP8rwvwY8"; 
 
 function onYouTubeIframeAPIReady() {
     headerPlayer = new YT.Player('header-video', {
@@ -462,12 +473,12 @@ function onYouTubeIframeAPIReady() {
             showinfo: 0,
             modestbranding: 1,
             loop: 1,
-            playlist: HEADER_VIDEO_ID, // notwendig für loop
+            playlist: HEADER_VIDEO_ID, 
             mute: 1,
         },
         events: {
             onReady: (event) => {
-                event.target.mute();     // wichtig für Autoplay
+                event.target.mute();     
                 event.target.playVideo();
             }
         }
@@ -508,8 +519,9 @@ document.getElementById('enable-sound').addEventListener('click', () => {
       setDarkMode(!current);
   });
   
-  // Beim Laden berücksichtigen
+  
   const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const savedMode = localStorage.getItem("darkMode");
   setDarkMode(savedMode === "true" || (savedMode === null && systemDark));
- 
+  
+  
