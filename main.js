@@ -262,6 +262,7 @@ async function ladeFilmeAlleInGrid() {
 
         container.appendChild(div);
     }
+    updateWatchlistHighlight();
 }
 const modal = document.getElementById('modal');
 const closeModal = document.getElementById('closeModal');
@@ -336,6 +337,7 @@ function showModal(film) {
 
         const div = document.createElement("div");
         div.className = "movie watchlist-item";
+        div.classList.add("movie", "watchlist-item");
 
         
         if (i === 0 || i === 1) {
@@ -523,5 +525,23 @@ document.getElementById('enable-sound').addEventListener('click', () => {
   const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const savedMode = localStorage.getItem("darkMode");
   setDarkMode(savedMode === "true" || (savedMode === null && systemDark));
+  
+  function updateWatchlistHighlight() {
+    document.querySelectorAll('.movie').forEach(movie => {
+        const id = movie.querySelector('.heart')?.dataset.id;
+        if (!id) return;
+
+        if (isInWatchlist(id)) {
+            movie.classList.add('in-watchlist');
+        } else {
+            movie.classList.remove('in-watchlist');
+        }
+    });
+}
+
+
+updateWatchlistHighlight();
+ 
+
   
   
