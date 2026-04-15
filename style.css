@@ -628,7 +628,7 @@ img {
 }
 /* Filme, die in der Watchlist sind, hervorheben */
 .movie.in-watchlist {
-  border: 3px solid #711ae4;
+  border: 3px solid #ff00ff;
   box-shadow: 0 0 15px rgba(255, 0, 255, 0.6);
   animation: pulseGlow 2s infinite;
   transition: transform 0.3s, box-shadow 0.3s;
